@@ -7,10 +7,10 @@ import (
 
 type Users struct {
 	ID        int64     `json:"id"`
-	Judul     string    `json:"judul" validate:"required"`
-	Tanggal   time.Time `json:"tanggal" validate:"required"`
-	Users     Users		`json:"users"`
-	Cow       Cow		`json:"cow"`
+	Name	  string	`json:"name"`
+	Email     string    `json:"email"`
+	Phone     string    `json:"no_hp"`
+	Alamat    string    `json:"alamat"`
 	UpdatedAt time.Time `json:"updated_at"`
 	CreatedAt time.Time `json:"created_at"`
 }
