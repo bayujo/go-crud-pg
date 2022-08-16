@@ -5,11 +5,10 @@ import (
 	"time"
 )
 
-// Schedule ...
 type Schedule struct {
 	ID        int64     `json:"id"`
-	Judul     string    `json:"judul" validate:"required"`
-	Tanggal   time.Time `json:"tanggal" validate:"required"`
+	Judul     string    `json:"judul"`
+	Tanggal   time.Time `json:"tanggal"`
 	Users     Users		`json:"users"`
 	Cow       Cow		`json:"cow"`
 	UpdatedAt time.Time `json:"updated_at"`
@@ -17,17 +16,6 @@ type Schedule struct {
 	Status    int8		`json:"status"`
 }
 
-// ScheduleUsecase represent the Schedule's usecases
-// type ScheduleUsecase interface {
-// 	Fetch(ctx context.Context, cursor string, num int64) ([]Schedule, string, error)
-// 	GetByID(ctx context.Context, id int64) (Schedule, error)
-// 	Update(ctx context.Context, ar *Schedule) error
-// 	GetByTitle(ctx context.Context, title string) (Schedule, error)
-// 	Store(context.Context, *Schedule) error
-// 	Delete(ctx context.Context, id int64) error
-// }
-
-// ScheduleRepository represent the Schedule's repository contract
 type ScheduleRepository interface {
 	Fetch(ctx context.Context, cursor string, num int64) (res []Schedule, nextCursor string, err error)
 	GetByID(ctx context.Context, id int64) (Schedule, error)

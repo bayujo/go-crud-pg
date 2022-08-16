@@ -7,10 +7,10 @@ import (
 
 type Cow struct {
 	ID        int64     `json:"id"`
-	Kode      string    `json:"kode" validate:"required"`
-	Nama      string    `json:"nama" validate:"required"`
-	Bobot     int8		`json:"bobot" validate:"required"`
-	Tanggal   time.Time `json:"tgl_lahir" validate:"required"`
+	Kode      string    `json:"kode"`
+	Nama      string    `json:"nama"`
+	Bobot     int8		`json:"bobot"`
+	Tanggal   time.Time `json:"tgl_lahir"`
 	UpdatedAt time.Time `json:"updated_at"`
 	CreatedAt time.Time `json:"created_at"`
 }

@@ -157,11 +157,12 @@ func (a *scheduleUsecase) GetByID(c context.Context, id int64) (res entity.Sched
 	}
 
 	resCow, err := a.cowRepo.GetByID(ctx, res.Cow.Kode)
+	resUsers, err := a.usersRepo.GetByID(ctx, res.Users.ID)
 	if err != nil {
 		return entity.Schedule{}, err
 	}
-	res.Cow = resCow
-	return
+	res.Cow, res.Users = resCow, resUsers
+	return res, err
 }
 
 func (a *scheduleUsecase) Update(c context.Context, ar *entity.Schedule) (err error) {

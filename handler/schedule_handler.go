@@ -24,7 +24,7 @@ func NewScheduleHandler(e *echo.Echo, us ScheduleUsecase) {
 	}
 	e.GET("/schedules", handler.FetchSchedule)
 	e.POST("/schedules", handler.Store)
-	//e.GET("/schedules/:id", handler.GetByID)
+	e.GET("/schedules/:id", handler.GetByID)
 	//e.DELETE("/schedules/:id", handler.Delete)
 }
 
@@ -70,6 +70,23 @@ func (s *ScheduleHandler) FetchSchedule(c echo.Context) error {
 
 	c.Response().Header().Set(`X-Cursor`, nextCursor)
 	return c.JSON(http.StatusOK, listSc)
+}
+
+func (s *ScheduleHandler) GetByID(c echo.Context) (err error) {
+	idP, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusNotFound, entity.ErrNotFound.Error())
+	}
+
+	id := int64(idP)
+	ctx := c.Request().Context()
+
+	sce, err := s.SUsecase.GetByID(ctx, id)
+	if err != nil {
+		return c.JSON(getStatusCode(err), ResponseError{Message: err.Error()})
+	}
+
+	return c.JSON(http.StatusOK, sce)
 }
 
 func (s *ScheduleHandler) Store(c echo.Context) (err error) {
