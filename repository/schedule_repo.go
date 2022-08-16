@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"log"
 
 	"go-crud-pg/entity"
 
@@ -127,7 +126,7 @@ func (m *pgsqlScheduleRepository) Store(ctx context.Context, s *entity.Schedule)
 	if err != nil {
 		return
 	}
-	log.Println(s.Judul, s.Tanggal, s.Cow.Kode, s.Users.ID)
+	fmt.Println(s.Judul, s.Tanggal, s.Cow.Kode, s.Users.ID)
 	res, err := stmt.ExecContext(ctx, s.Judul, s.Tanggal, s.Cow.Kode, s.Users.ID)
 	if err != nil {
 		return
