@@ -29,6 +29,7 @@ func (p *pgsqlUsersRepo) getOne(ctx context.Context, query string, args ...inter
 		&res.Name,
 		&res.Alamat,
 		&res.Email,
+		&res.Phone,
 		&res.CreatedAt,
 		&res.UpdatedAt,
 	)
@@ -37,6 +38,6 @@ func (p *pgsqlUsersRepo) getOne(ctx context.Context, query string, args ...inter
 }
 
 func (p *pgsqlUsersRepo) GetByID(ctx context.Context, id int64) (entity.Users, error) {
-	query := `SELECT * from users WHERE id=$1`
+	query := `SELECT id, name, email, no_hp, alamat, updated_at, created_at from users WHERE id=$1`
 	return p.getOne(ctx, query, id)
 }

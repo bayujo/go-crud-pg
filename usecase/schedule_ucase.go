@@ -17,7 +17,7 @@ type scheduleUsecase struct {
 	contextTimeout  time.Duration
 }
 
-func NewScheduleUsecase(s entity.ScheduleRepository, c entity.CowRepository, u entity.UsersRepository, timeout time.Duration) entity.ScheduleUsecase {
+func NewScheduleUsecase(s entity.ScheduleRepository, c entity.CowRepository, u entity.UsersRepository, timeout time.Duration) *scheduleUsecase {
 	return &scheduleUsecase{
 		scheduleRepo: s,
 		cowRepo: c,

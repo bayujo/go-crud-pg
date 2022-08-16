@@ -14,17 +14,18 @@ type Schedule struct {
 	Cow       Cow		`json:"cow"`
 	UpdatedAt time.Time `json:"updated_at"`
 	CreatedAt time.Time `json:"created_at"`
+	Status    int8		`json:"status"`
 }
 
 // ScheduleUsecase represent the Schedule's usecases
-type ScheduleUsecase interface {
-	Fetch(ctx context.Context, cursor string, num int64) ([]Schedule, string, error)
-	GetByID(ctx context.Context, id int64) (Schedule, error)
-	Update(ctx context.Context, ar *Schedule) error
-	GetByTitle(ctx context.Context, title string) (Schedule, error)
-	Store(context.Context, *Schedule) error
-	Delete(ctx context.Context, id int64) error
-}
+// type ScheduleUsecase interface {
+// 	Fetch(ctx context.Context, cursor string, num int64) ([]Schedule, string, error)
+// 	GetByID(ctx context.Context, id int64) (Schedule, error)
+// 	Update(ctx context.Context, ar *Schedule) error
+// 	GetByTitle(ctx context.Context, title string) (Schedule, error)
+// 	Store(context.Context, *Schedule) error
+// 	Delete(ctx context.Context, id int64) error
+// }
 
 // ScheduleRepository represent the Schedule's repository contract
 type ScheduleRepository interface {

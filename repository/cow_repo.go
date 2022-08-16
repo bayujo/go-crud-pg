@@ -27,6 +27,7 @@ func (p *pgsqlCowRepo) getOne(ctx context.Context, query string, args ...interfa
 	err = row.Scan(
 		&res.ID,
 		&res.Kode,
+		&res.Nama,
 		&res.Bobot,
 		&res.Tanggal,
 		&res.UpdatedAt,

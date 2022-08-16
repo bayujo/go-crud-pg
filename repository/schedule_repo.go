@@ -42,11 +42,11 @@ func (p *pgsqlScheduleRepository) fetch(ctx context.Context, query string, args 
 			&t.ID,
 			&t.Judul,
 			&t.Tanggal,
-			&t.Cow,
-			&cowID,
 			&usersID,
+			&cowID,
 			&t.UpdatedAt,
 			&t.CreatedAt,
+			&t.Status,
 		)
 
 		if err != nil {
@@ -105,7 +105,7 @@ func (m *pgsqlScheduleRepository) GetByID(ctx context.Context, id int64) (res en
 }
 
 func (m *pgsqlScheduleRepository) GetByTitle(ctx context.Context, title string) (res entity.Schedule, err error) {
-	query := `SELECT * FROM Schedule WHERE title = $1`
+	query := `SELECT * FROM Schedule WHERE judul = $1`
 
 	list, err := m.fetch(ctx, query, title)
 	if err != nil {
