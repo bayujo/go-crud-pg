@@ -20,7 +20,7 @@ type ScheduleRepository interface {
 	Fetch(ctx context.Context, cursor string, num int64) (res []Schedule, nextCursor string, err error)
 	GetByID(ctx context.Context, id int64) (Schedule, error)
 	GetByTitle(ctx context.Context, title string) (Schedule, error)
-	Update(ctx context.Context, ar *Schedule) error
+	Update(ctx context.Context, ar *Schedule, id int64) error
 	Store(ctx context.Context, a *Schedule) error
 	Delete(ctx context.Context, id int64) error
 }

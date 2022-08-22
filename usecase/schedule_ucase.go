@@ -165,12 +165,18 @@ func (a *scheduleUsecase) GetByID(c context.Context, id int64) (res entity.Sched
 	return res, err
 }
 
-func (a *scheduleUsecase) Update(c context.Context, ar *entity.Schedule) (err error) {
+func (a *scheduleUsecase) Update(c context.Context, m *entity.Schedule, id int64) (err error) {
 	ctx, cancel := context.WithTimeout(c, a.contextTimeout)
 	defer cancel()
+	existedSchedule, err := a.scheduleRepo.GetByID(ctx, id)
+	if err != nil {
+		return
+	}
+	if existedSchedule == (entity.Schedule{}) {
+		return entity.ErrNotFound
+	}
 
-	ar.UpdatedAt = time.Now()
-	return a.scheduleRepo.Update(ctx, ar)
+	return a.scheduleRepo.Update(ctx, m, id)
 }
 
 func (a *scheduleUsecase) GetByTitle(c context.Context, title string) (res entity.Schedule, err error) {

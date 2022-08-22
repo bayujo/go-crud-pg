@@ -24,8 +24,9 @@ func NewScheduleHandler(e *echo.Echo, us ScheduleUsecase) {
 	}
 	e.GET("/schedules", handler.FetchSchedule)
 	e.POST("/schedules", handler.Store)
+	e.PUT("/schedules/:id", handler.Update)
 	e.GET("/schedules/:id", handler.GetByID)
-	//e.DELETE("/schedules/:id", handler.Delete)
+	e.DELETE("/schedules/:id", handler.Delete)
 }
 
 func getStatusCode(err error) int {
@@ -108,4 +109,50 @@ func (s *ScheduleHandler) Store(c echo.Context) (err error) {
 	}
 
 	return c.JSON(http.StatusCreated, schedule)
+}
+
+func (s *ScheduleHandler) Update(c echo.Context) (err error) {
+	var schedule entity.Schedule
+
+	err = c.Bind(&schedule)
+
+	if err != nil {
+		return c.JSON(http.StatusUnprocessableEntity, err.Error())
+	}
+
+	var ok bool
+	if ok, err = isRequestValid(&schedule); !ok {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	idP, err := strconv.Atoi((c.Param("id")))
+	if err != nil {
+		return c.JSON(http.StatusUnprocessableEntity, err.Error())
+	}
+	id := int64(idP)
+	ctx := c.Request().Context()
+	err = s.SUsecase.Update(ctx, &schedule, id)
+	if err != nil {
+		return c.JSON(getStatusCode(err), ResponseError{Message: err.Error()})
+	}
+	
+	return c.JSON(http.StatusCreated, schedule)
+	
+}
+
+func (s *ScheduleHandler) Delete(c echo.Context) error {
+	idP, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusNotFound, entity.ErrNotFound.Error())
+	}
+
+	id := int64(idP)
+	ctx := c.Request().Context()
+
+	err = s.SUsecase.Delete(ctx, id)
+	if err != nil {
+		return c.JSON(getStatusCode(err), ResponseError{Message: err.Error()})
+	}
+
+	return c.NoContent(http.StatusNoContent)
 }
