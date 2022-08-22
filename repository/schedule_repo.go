@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"go-crud-pg/entity"
-	//"github.com/jmoiron/sqlx"
 	"github.com/sirupsen/logrus"
 )
 
@@ -164,21 +163,36 @@ func (m *pgsqlScheduleRepository) Delete(ctx context.Context, id int64) (err err
 }
 func (m *pgsqlScheduleRepository) Update(ctx context.Context, s *entity.Schedule, id int64) (err error) {
 	//query := `UPDATE schedule set judul=$1, tanggal=$2, id_cow=$3, id_users=$4, updated_at=$5 WHERE id = $6`
+	isUpdate := false
 	qb := New(DBPostgres, "UPDATE schedule set")
 	if s.Judul != "" {
 		qb.AddQuery(" judul = ?,", s.Judul)
+		isUpdate = true
 	}
 	if !s.Tanggal.IsZero() {
 		qb.AddQuery(" tanggal = ?,", s.Tanggal)
+		isUpdate = true
 	}
 	if s.Cow.Kode != "" {
 		qb.AddQuery(" id_cow = ?,", s.Cow.Kode)
+		isUpdate = true
 	}
+	if s.Users.ID != 0 {
+		qb.AddQuery(" id_users = ?,", s.Users.ID)
+		isUpdate = true
+	}
+	if s.Status != 0 {
+		qb.AddQuery(" status = ?,", s.Status)
+		isUpdate = true
+	}
+	if isUpdate {
+		qb.AddQuery(" updated_at = ?,", time.Now())
+	}
+	
 	qb.TrimComma()
 	qb.AddQuery(" WHERE id = ?", id)
 	
 	log.Println(qb.Query())
-	//err = sqlx.GetContext(ctx, , qb.Query(), qb.Args())
 	stmt, err := m.Conn.PrepareContext(ctx, qb.Query())
 	if err != nil {
 		return
